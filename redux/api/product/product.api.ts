@@ -34,11 +34,24 @@ export const productsApi = baseApi.injectEndpoints({
       { products: IProduct[]; meta: IMeta },
       { params?: IQuery }
     >({
-      query: (arg) => ({
-        url,
-        method: "GET",
-        params: arg?.params,
-      }),
+      query: (arg) => {
+        const { search, ...restParams } = arg?.params || {};
+
+        if (search) {
+          return {
+            url: `${url}/search`,
+            method: "GET",
+            params: { searchedText: search, ...restParams },
+          };
+        }
+
+        return {
+          url,
+          method: "GET",
+          params: restParams,
+        };
+      },
+
       transformResponse: (response: { data: any[]; meta: IMeta }) => ({
         products: response.data.map((item) => ({
           id: item.id,

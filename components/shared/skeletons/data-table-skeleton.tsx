@@ -18,7 +18,7 @@ export function DataTableSkeleton({
   showToolbar = false,
 }: DataTableSkeletonProps) {
   // Number of skeleton rows to show
-  const rows = 5;
+  const rows = 10;
 
   return (
     <div className="space-y-4">
