@@ -15,6 +15,6 @@ export const loginWithCredential = async (
     data: body,
   });
 
-  // console.log(res);
+  console.log(res);
   return res;
 };

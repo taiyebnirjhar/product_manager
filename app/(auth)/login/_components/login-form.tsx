@@ -11,6 +11,7 @@ import {
   Input,
 } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -28,24 +29,26 @@ export default function LoginForm() {
   const onSubmit = async (data: loginFormValues) => {
     setIsLoading(true);
     try {
-      const apiBody = {
+      const result = await signIn("email", {
         email: data.email,
-      };
+        redirect: false,
+        callbackUrl: "/", // <-- redirect here after login
+      });
 
-      // const result = await signIn(apiBody);
+      console.log(result);
 
-      // if (result?.error) {
-      //   toast.error(result.error);
-      //   setIsLoading(false);
-      //   return;
-      // }
+      if (result?.error) {
+        toast.error(result.error);
+        setIsLoading(false);
+        return;
+      }
 
-      // if (result?.ok) {
-      //   toast.success("Login successful");
-      //   window.location.replace("/");
-      // } else {
-      //   toast.error("Login failed");
-      // }
+      if (result?.ok) {
+        toast.success("Login successful");
+        window.location.replace("/");
+      } else {
+        toast.error("Login failed");
+      }
     } catch (error: any) {
       // console.error("Login Error:", error);
       toast.error(error?.message || "Something went wrong. Please try again.");

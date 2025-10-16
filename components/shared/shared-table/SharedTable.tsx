@@ -8,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/";
 import { ArrowRight, Trash2 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
