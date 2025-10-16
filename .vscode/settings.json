@@ -1,0 +1,125 @@
+{
+  // Editor Settings
+  "editor.fontSize": 19,
+  "editor.fontFamily": "Fira Code, Operator Mono",
+  "editor.fontLigatures": true,
+  "editor.wordWrap": "on",
+  "editor.minimap.enabled": false,
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "comment",
+        "settings": {
+          "fontStyle": "italic"
+        }
+      }
+    ]
+  },
+
+  // Cursor Settings
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.cursorBlinking": "expand",
+
+  // Code Formatting
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.tslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "eslint.alwaysShowStatus": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnType": true,
+    "editor.formatOnSave": true
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnType": true,
+    "editor.formatOnSave": true
+  },
+
+  // Terminal Settings - Dracula Theme Colors
+  "terminal.integrated.fontSize": 16,
+  "terminal.integrated.fontWeight": "normal",
+  "terminal.integrated.fontFamily": "Fira Code, Operator Mono",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorCustomizations": {
+    "terminal.background": "#282A36",
+    "terminal.foreground": "#F8F8F2",
+    "terminalCursor.background": "#FF79C6",
+    "terminalCursor.foreground": "#FF79C6",
+    "terminal.ansiBlack": "#21222C",
+    "terminal.ansiBlue": "#6272A4",
+    "terminal.ansiBrightBlack": "#6272A4",
+    "terminal.ansiBrightBlue": "#8BE9FD",
+    "terminal.ansiBrightCyan": "#8BE9FD",
+    "terminal.ansiBrightGreen": "#50FA7B",
+    "terminal.ansiBrightMagenta": "#FF79C6",
+    "terminal.ansiBrightRed": "#FF5555",
+    "terminal.ansiBrightWhite": "#F8F8F2",
+    "terminal.ansiBrightYellow": "#F1FA8C",
+    "terminal.ansiCyan": "#8BE9FD",
+    "terminal.ansiGreen": "#50FA7B",
+    "terminal.ansiMagenta": "#BD93F9",
+    "terminal.ansiRed": "#FF5555",
+    "terminal.ansiWhite": "#F8F8F2",
+    "terminal.ansiYellow": "#F1FA8C"
+  },
+
+  // Auto Save and File Management
+  "editor.inlineSuggest.enabled": true,
+  "editor.insertSpaces": true,
+  "files.autoSave": "onFocusChange",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  // Auto Update Import Paths When Renaming Files
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+
+  // Git & Copilot Settings
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true,
+    "scminput": false
+  },
+  "git.openRepositoryInParentFolders": "never",
+  "git.suggestSmartCommit": false,
+  "git.autofetch": true,
+
+  // JavaScript & TypeScript Enhancements
+  "editor.guides.bracketPairs": true,
+
+  // Workspace & Explorer Preferences
+  "explorer.confirmDelete": false,
+  "workbench.colorTheme": "Dracula Theme",
+  "workbench.startupEditor": "none",
+  "window.zoomLevel": 1,
+
+  // Improve Single Click File Opening (Prevents Need for Double Click)
+  "workbench.list.openMode": "singleClick",
+
+  // Tailwind CSS Folding
+  "tailwind-fold.autoFold": true,
+  "tailwind-fold.foldStyle": "QUOTES",
+  "tailwind-fold.showTailwindImage": false,
+
+  // Ignore node_modules in Explorer
+  "files.exclude": {
+    "**/node_modules": true
+  },
+
+  // Console Ninja
+  "console-ninja.featureSet": "Community",
+
+  // Spell Checker Custom Words
+  "cSpell.userWords": ["MERN", "salesinfo", "Satkhira"],
+  "terminal.integrated.env.osx": {},
+
+  //Power mode
+  "powermode.enabled": true,
+  "powermode.presets": "flames"
+}
