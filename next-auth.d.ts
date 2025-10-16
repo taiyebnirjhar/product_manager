@@ -1,10 +1,7 @@
 import { DefaultSession } from "next-auth";
 
 export interface TokenPayload {
-  userId: string;
-  phone: string;
-  role: string;
-  eiin: number;
+  email: string;
   iat: number;
   exp: number;
 }

@@ -1,15 +1,7 @@
 export enum TAG_TYPES {
   GLOBAL = "global",
-  SHIFTS = "shifts",
-  SECTIONS = "sections",
-  CLASSES = "classes",
-  RESOURCES = "resources",
-  STUDENTS = "students",
-  TEACHERS = "teachers",
-  COMMITTEES = "committees",
-  NOTICES = "notices",
-  DOWNLOADS = "downloads",
-  INSTITUTE = "institute",
+  PRODUCTS = "products",
+  CATEGORIES = "categories",
 }
 
 export const tagTypesList = Object.values(TAG_TYPES).filter(

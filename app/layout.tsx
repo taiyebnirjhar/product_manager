@@ -1,7 +1,7 @@
-import AuthProvider from "@/components/providers/auth-provider";
 import { Toaster, TooltipProvider } from "@/components/ui";
 import { outfit } from "@/fonts/fonts";
 import { cn } from "@/lib/utils";
+import AuthProvider from "@/providers/auth-provider";
 import { ReduxProvider } from "@/providers/redux-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import type { Metadata } from "next";

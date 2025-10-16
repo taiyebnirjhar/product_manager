@@ -4,9 +4,14 @@ import Link from "next/link";
 import { DarkModeSwitch } from "@/components/shared/dark-mode/dark-mode-switch";
 import FullscreenButton from "@/components/shared/full-screen-button/full-screen-button";
 import SidebarToggler from "@/components/shared/sidebar-toggler/sidebar-toggler";
+import useAuth from "@/hooks/use-auth";
 import { UserMenu } from "../user-menu/user-menu";
 
 export default function Navbar() {
+  const { data: session } = useAuth();
+  const userEmail = session?.user?.email.split("@")[0] || "N/A";
+  const designation = "admin";
+
   return (
     <header className="sticky top-0 z-10 flex w-full border-b border-border bg-muted">
       <div className="flex flex-grow items-center justify-between px-4 py-3 shadow-2 ">
@@ -28,7 +33,7 @@ export default function Navbar() {
           <DarkModeSwitch />
 
           <FullscreenButton />
-          <UserMenu name={"taiyeb nirjhor"} designation={"admin"} />
+          <UserMenu name={userEmail} designation={designation} />
         </div>
       </div>
     </header>

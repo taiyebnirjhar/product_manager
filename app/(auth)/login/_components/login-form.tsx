@@ -11,7 +11,8 @@ import {
   Input,
 } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
+
+import { signIn } from "@/service/auth/sign-in";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -28,14 +29,11 @@ export default function LoginForm() {
 
   const onSubmit = async (data: loginFormValues) => {
     setIsLoading(true);
+    const payload = { email: data.email };
     try {
-      const result = await signIn("email", {
-        email: data.email,
-        redirect: false,
-        callbackUrl: "/", // <-- redirect here after login
-      });
+      const result = await signIn(payload);
 
-      console.log(result);
+      // console.log(result);
 
       if (result?.error) {
         toast.error(result.error);

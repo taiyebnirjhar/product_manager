@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
     secret: envConfig.jwt.secret,
   });
 
-  // console.log(token);
+  // console.log(" Middleware Token:", token);
   const isAuthenticated = !!token?.user && !token?.error;
 
   if (!isAuthenticated) {

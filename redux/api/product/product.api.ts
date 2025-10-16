@@ -1,0 +1,131 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { createToastHandler } from "@/lib/onquery-toast";
+import { baseApi } from "@/redux/base-api";
+import { TAG_TYPES } from "@/redux/tag-types";
+import {
+  ICreateProductPayload,
+  IMeta,
+  IProduct,
+  IQuery,
+  IUpdateProductPayload,
+} from "@/types";
+
+const url = "/products";
+
+export const productsApi = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    // Create Product
+    createProduct: builder.mutation({
+      query: (arg: { data: Partial<ICreateProductPayload> }) => ({
+        url,
+        method: "POST",
+        data: arg.data,
+      }),
+      invalidatesTags: [TAG_TYPES.PRODUCTS],
+      onQueryStarted: createToastHandler({
+        loading: "Creating product...",
+        success: "Product created successfully",
+        error: "Failed to create product",
+      }),
+    }),
+
+    // Get Products with pagination/filtering
+    getProducts: builder.query<
+      { products: IProduct[]; meta: IMeta },
+      { params?: IQuery }
+    >({
+      query: (arg) => ({
+        url,
+        method: "GET",
+        params: arg?.params,
+      }),
+      transformResponse: (response: { data: any[]; meta: IMeta }) => ({
+        products: response.data.map((item) => ({
+          id: item.id,
+          name: item.name,
+          description: item.description,
+          images: item.images,
+          price: item.price,
+          slug: item.slug,
+          createdAt: item.createdAt,
+          updatedAt: item.updatedAt,
+          category: item.category,
+        })),
+        meta: response.meta,
+      }),
+      providesTags: [TAG_TYPES.PRODUCTS],
+    }),
+
+    // Get Single Product
+    getSingleProduct: builder.query<
+      { product: IProduct },
+      { slug: string; params?: IQuery }
+    >({
+      query: (arg) => ({
+        url: `${url}/${arg.slug}`,
+        method: "GET",
+        params: arg?.params,
+      }),
+      transformResponse: (response: { data: any }) => ({
+        product: {
+          id: response.data.id,
+          name: response.data.name,
+          description: response.data.description,
+          images: response.data.images,
+          price: response.data.price,
+          slug: response.data.slug,
+          createdAt: response.data.createdAt,
+          updatedAt: response.data.updatedAt,
+          category: response.data.category,
+        },
+      }),
+      providesTags: (_result, _error, arg) => [
+        { type: TAG_TYPES.PRODUCTS, id: arg.slug },
+      ],
+    }),
+
+    // Update Product
+    updateProduct: builder.mutation({
+      query: (arg: { id: string; data: Partial<IUpdateProductPayload> }) => ({
+        url: `${url}/${arg.id}`,
+        method: "PUT",
+        data: arg.data,
+      }),
+      invalidatesTags: (_result, _error, arg) => [
+        { type: TAG_TYPES.PRODUCTS, id: arg.id },
+        TAG_TYPES.PRODUCTS,
+      ],
+      onQueryStarted: createToastHandler({
+        loading: "Updating product...",
+        success: "Product updated successfully",
+        error: "Failed to update product",
+      }),
+    }),
+
+    // Delete Product
+    deleteProduct: builder.mutation({
+      query: (arg: { id: string }) => ({
+        url: `${url}/${arg.id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [TAG_TYPES.PRODUCTS],
+      onQueryStarted: createToastHandler({
+        loading: "Deleting product...",
+        success: "Product deleted successfully",
+        error: "Failed to delete product",
+      }),
+    }),
+  }),
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  overrideExisting: module.hot?.status() === "apply",
+});
+
+export const {
+  useCreateProductMutation,
+  useGetProductsQuery,
+  useGetSingleProductQuery,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
+} = productsApi;

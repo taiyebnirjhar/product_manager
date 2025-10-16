@@ -8,25 +8,25 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/";
-import { AlarmClockPlus, ArrowRight, GraduationCap } from "lucide-react";
+import { ArrowRight, ChartBarStacked, ShoppingBasket } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const router = useRouter();
   const quickActions = [
     {
-      title: "Products",
-      description: "Manage Your ProductsS",
-      icon: AlarmClockPlus,
-      href: "/products",
-      color: "bg-orange-500",
-    },
-    {
       title: "Categories",
       description: "Manage Your Categories",
-      icon: GraduationCap,
+      icon: ChartBarStacked,
       href: "/categories",
       color: "bg-green-500",
+    },
+    {
+      title: "Products",
+      description: "Manage Your Products",
+      icon: ShoppingBasket,
+      href: "/products",
+      color: "bg-orange-500",
     },
   ];
 
