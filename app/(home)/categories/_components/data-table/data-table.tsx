@@ -84,7 +84,7 @@ export function DataTable<TData, TValue>({
     rowCount: totalDocumentCount,
     manualPagination: true,
     manualSorting: true,
-    getRowId: (row: any) => row._id,
+    getRowId: (row: any) => row.id,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
