@@ -1,0 +1,32 @@
+#!/bin/bash
+
+echo "Running lint-staged..."
+if npx lint-staged; then
+  echo "Lint-staged passed. Running build..."
+
+  # Determine package manager
+  if [ -f yarn.lock ]; then
+    echo "yarn.lock found. Building with yarn..."
+    yarn build
+    # Restart dev server in the background
+    pkill -f "yarn dev" >/dev/null 2>&1
+    nohup yarn dev >/dev/null 2>&1 &
+    echo "yarn dev restarted."
+  elif [ -f bun.lockb ]; then
+    echo "bun.lockb found. Building with bun..."
+    bun run build
+    pkill -f "bun dev" >/dev/null 2>&1
+    nohup bun dev >/dev/null 2>&1 &
+    echo "bun dev restarted."
+  else
+    echo "No lock file found. Building with npm..."
+    npm run build
+    pkill -f "npm run dev" >/dev/null 2>&1
+    nohup npm run dev >/dev/null 2>&1 &
+    echo "npm dev restarted."
+  fi
+
+else
+  echo "Lint-staged failed. Skipping build."
+  exit 1
+fi
