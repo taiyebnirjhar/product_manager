@@ -6,7 +6,7 @@ import { Button, Input } from "@/components/ui";
 import { useDebounced } from "@/hooks/use-debounced";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
-import { Trash } from "lucide-react";
+import { Plus, Trash } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DataTableViewOptions } from "./data-table-view-options";
@@ -68,6 +68,15 @@ export function DataTableToolbar<TData>({
       </div>
 
       <DataTableViewOptions table={table} />
+
+      <Button
+        size={"sm"}
+        onClick={() => {
+          router.push("/products/create");
+        }}
+      >
+        Add Product <Plus className="ml-2 h-4 w-4" />
+      </Button>
     </div>
   );
 }
