@@ -1,6 +1,11 @@
 export const dataTablePaginationOptions = [5, 10, 20, 50, 100];
 
-export const dataTablePaginationDefaultState = {
+interface PaginationState {
+  pageIndex: number;
+  pageSize: number;
+}
+
+export const dataTablePaginationDefaultState: PaginationState = {
   pageIndex: 0,
   pageSize: 5,
 };

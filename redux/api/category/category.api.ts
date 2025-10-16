@@ -12,11 +12,23 @@ export const categoriesApi = baseApi.injectEndpoints({
       { categories: ICategory[]; meta: IMeta },
       { params?: IQuery }
     >({
-      query: (arg) => ({
-        url,
-        method: "GET",
-        params: arg?.params,
-      }),
+      query: (arg) => {
+        const { search, ...restParams } = arg?.params || {};
+
+        if (search) {
+          return {
+            url: `${url}/search`,
+            method: "GET",
+            params: { searchedText: search, ...restParams },
+          };
+        }
+
+        return {
+          url,
+          method: "GET",
+          params: restParams,
+        };
+      },
       transformResponse: (response: { data: any[]; meta: IMeta }) => ({
         categories: response.data.map((item) => ({
           id: item.id,

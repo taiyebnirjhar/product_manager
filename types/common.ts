@@ -17,6 +17,7 @@ export type ResponseSuccessType<T = any> = {
 
 export interface IQueryFeatures {
   page?: number | string;
+  offset?: number | string;
   limit?: number | string;
   fields?: string;
   populate?: string;
