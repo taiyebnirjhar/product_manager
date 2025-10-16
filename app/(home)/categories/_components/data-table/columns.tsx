@@ -54,9 +54,7 @@ export const columns: ColumnDef<ICategory>[] = [
       <DataTableColumnHeader column={column} title="Description" />
     ),
     cell: ({ row }) => (
-      <span className="text-sm text-gray-600">
-        {row.original.description || "N/A"}
-      </span>
+      <span className="text-sm ">{row.original.description || "N/A"}</span>
     ),
     enableSorting: false,
     size: 250,
