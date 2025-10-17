@@ -65,7 +65,7 @@ export const columns: ColumnDef<IProduct>[] = [
     size: 250,
   },
   {
-    accessorKey: "category",
+    accessorKey: "categoryId",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Category" />
     ),

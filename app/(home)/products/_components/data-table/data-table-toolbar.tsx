@@ -2,8 +2,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { Button, Input } from "@/components/ui";
+import {
+  Button,
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui";
 import { useDebounced } from "@/hooks/use-debounced";
+import { useGetCategoriesQuery } from "@/redux/api/category/category.api";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 import { Plus, Trash } from "lucide-react";
@@ -18,6 +27,13 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
+  const {
+    data: categoriesData,
+    isLoading,
+    isError,
+  } = useGetCategoriesQuery({});
+  const categories = categoriesData?.categories || [];
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const queryParams = Object.fromEntries(searchParams.entries());
@@ -48,6 +64,37 @@ export function DataTableToolbar<TData>({
           <Button variant="ghost" className="h-8 w-8 p-0" disabled>
             <Trash className="h-4.5 w-4.5" />
           </Button>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Select
+            value={
+              (table.getColumn("categoryId")?.getFilterValue() as string) ||
+              "all"
+            }
+            onValueChange={(value) => {
+              if (value === "all") {
+                table.getColumn("categoryId")?.setFilterValue(null); // clear filter
+              } else {
+                table.getColumn("categoryId")?.setFilterValue(value);
+              }
+            }}
+            disabled={isLoading || isError}
+          >
+            <SelectTrigger className="h-8 w-[180px]">
+              <SelectValue
+                placeholder={isLoading ? "Loading..." : "Filter by Category"}
+              />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All</SelectItem>
+              {!isLoading &&
+                categories.map((cat) => (
+                  <SelectItem key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
         </div>
         <Input
           placeholder="Search "
