@@ -205,16 +205,19 @@ export default function EditProductsForm({
               <Button
                 type="button"
                 variant="ghost"
-                className="col-span-1"
+                className="col-span-1 border border-border"
                 disabled={isLoading}
-                onClick={() => {}}
+                onClick={() => {
+                  router.push("/products");
+                }}
               >
                 Cancel
               </Button>
 
               <Button
                 type="submit"
-                className="col-span-1 bg-zinc-900 text-white hover:bg-zinc-800"
+                className="col-span-1 border border-border "
+                variant={"default"}
                 disabled={isLoading}
               >
                 Submit

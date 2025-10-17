@@ -190,7 +190,7 @@ export default function CreateProductsForm() {
               <Button
                 type="button"
                 variant="ghost"
-                className="col-span-1"
+                className="col-span-1 border border-border"
                 disabled={isLoading}
                 onClick={() => {
                   router.push("/products");
@@ -201,7 +201,8 @@ export default function CreateProductsForm() {
 
               <Button
                 type="submit"
-                className="col-span-1 bg-zinc-900 text-white hover:bg-zinc-800"
+                className="col-span-1 border border-border "
+                variant={"default"}
                 disabled={isLoading}
               >
                 Submit

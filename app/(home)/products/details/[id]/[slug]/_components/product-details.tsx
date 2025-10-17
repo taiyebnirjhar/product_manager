@@ -137,7 +137,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
             </div>
 
             {/* Product Meta Information */}
-            <div className="space-y-2 sm:space-y-3 bg-muted/50 rounded-lg">
+            <div className="space-y-2 sm:space-y-3  rounded-lg">
               <div className="flex items-start gap-2 sm:gap-3">
                 <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                 <div className="min-w-0">
