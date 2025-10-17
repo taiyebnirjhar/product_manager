@@ -204,7 +204,7 @@ export default function CreateProductsForm() {
                 className="col-span-1 bg-zinc-900 text-white hover:bg-zinc-800"
                 disabled={isLoading}
               >
-                Publish Now
+                Submit
               </Button>
             </div>
           </form>
