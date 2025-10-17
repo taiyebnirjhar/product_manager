@@ -45,11 +45,13 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <Link href={"/products/details"}>
+        <Link
+          href={`/products/details/${row.original.id}/${row.original.slug}`}
+        >
           <DropdownMenuItem>Details</DropdownMenuItem>
         </Link>
 
-        <Link href={"/products/edit"}>
+        <Link href={`/products/edit/${row.original.id}/${row.original.slug}`}>
           <DropdownMenuItem>Edit</DropdownMenuItem>
         </Link>
         <Separator />

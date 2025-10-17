@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
   Form,
@@ -15,42 +14,55 @@ import {
   FormLabel,
   FormMessage,
   Input,
-  ResetAlert,
   Textarea,
 } from "@/components/ui";
-import { useFormAutosave } from "@/hooks/use-form-autosave";
 import { useGetCategoriesQuery } from "@/redux/api/category/category.api";
-import { useCreateProductMutation } from "@/redux/api/product/product.api";
-import { ICreateProductPayload } from "@/types";
+import {
+  useGetSingleProductQuery,
+  useUpdateProductMutation,
+} from "@/redux/api/product/product.api";
+import { IUpdateProductPayload } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RotateCcw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { CategorySelectField } from "../../_components/form-fields/category/category-select-field";
-import { ProductImagesField } from "../../_components/form-fields/images/product-images-field";
-import { PriceFormField } from "../../_components/form-fields/price/price-form-field";
+import { CategorySelectField } from "../../../../_components/form-fields/category/category-select-field";
+import { ProductImagesField } from "../../../../_components/form-fields/images/product-images-field";
+import { PriceFormField } from "../../../../_components/form-fields/price/price-form-field";
 import {
   productFormSchema,
   ProductFormValues,
-} from "../../_schemas/product-schema";
+} from "../../../../_schemas/product-schema";
 
-export default function CreateProductsForm() {
+export default function EditProductsForm({
+  id,
+  slug,
+}: {
+  id: string;
+  slug: string;
+}) {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
+
+  const {
+    data: fetchedData,
+    isLoading: fetchedDataLoading,
+    error: fetchError,
+  } = useGetSingleProductQuery(
+    {
+      slug: slug,
+    },
+    {
+      skip: !slug,
+    }
+  );
+
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
-    defaultValues: {},
   });
 
-  const { clearSavedData } = useFormAutosave({
-    form,
-    key: "product-form-draft",
-    debounceMs: 1000,
-  });
-
-  const [create] = useCreateProductMutation();
+  const [update] = useUpdateProductMutation();
   const { data, isLoading: categoryLoading } = useGetCategoriesQuery({
     params: { limit: 100, offset: 0 },
   });
@@ -58,15 +70,10 @@ export default function CreateProductsForm() {
   const categories = data?.categories || [];
 
   // Function to handle form reset
-  const handleReset = () => {
-    // Clear saved data from storage
-    clearSavedData();
-    window.location.reload();
-  };
 
   async function onSubmit(data: ProductFormValues) {
     console.log(data);
-    const payload: Partial<ICreateProductPayload> = {
+    const payload: Partial<IUpdateProductPayload> = {
       name: data.name,
       description: data.description,
       images: data.images,
@@ -76,9 +83,8 @@ export default function CreateProductsForm() {
 
     setIsLoading(true);
     try {
-      const response = await create({ data: payload }).unwrap();
-      toast.success("product created successfully");
-      clearSavedData();
+      const response = await update({ data: payload, id }).unwrap();
+      toast.success("product edited successfully");
       router.push("/products");
     } catch (error) {
       console.log(error);
@@ -88,26 +94,31 @@ export default function CreateProductsForm() {
     }
   }
 
+  React.useEffect(() => {
+    if (fetchedData && !fetchedDataLoading) {
+      const { product } = fetchedData;
+
+      form.reset({
+        name: product.name,
+        categoryId: product?.category?.id,
+        price: product.price,
+        images: product.images,
+        description: product.description,
+      });
+    }
+  }, [fetchedData, fetchedDataLoading, form]);
+
+  // Error handling for fetch
+  React.useEffect(() => {
+    if (fetchError) {
+      toast.error("Failed to load product data. Please try again.");
+    }
+  }, [fetchError]);
+
   return (
     <Card>
       <CardHeader className="flex flex-col md:flex-row justify-between md:items-center">
-        <CardTitle className="text-xl font-semibold">
-          Product Details
-          <CardDescription className="font-normal text-muted-foreground ">
-            Your progress is auto-saved — no worries if you refresh. You’re
-            welcome 😉
-          </CardDescription>
-        </CardTitle>
-
-        <ResetAlert onConfirm={handleReset}>
-          <Button
-            variant="outline"
-            size="icon"
-            className="rounded-full h-9 w-9 transition-all hover:bg-muted hover:scale-105 md:flex hidden"
-          >
-            <RotateCcw className="w-4 h-4" />
-          </Button>
-        </ResetAlert>
+        <CardTitle className="text-xl font-semibold">Product Details</CardTitle>
       </CardHeader>
 
       <CardContent>
@@ -192,9 +203,7 @@ export default function CreateProductsForm() {
                 variant="ghost"
                 className="col-span-1"
                 disabled={isLoading}
-                onClick={() => {
-                  router.push("/products");
-                }}
+                onClick={() => {}}
               >
                 Cancel
               </Button>

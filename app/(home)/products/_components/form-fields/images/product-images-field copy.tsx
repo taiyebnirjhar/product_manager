@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
@@ -21,7 +22,8 @@ import {
   Input,
 } from "@/components/ui/";
 import { ImageIcon, Plus, X } from "lucide-react";
-import React, { useState } from "react";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Control, FieldValues, Path } from "react-hook-form";
 
 interface ProductImagesFieldProps<T extends FieldValues> {
@@ -39,64 +41,91 @@ export function ProductImagesField<T extends FieldValues>({
 }: ProductImagesFieldProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+  const [images, setImages] = useState<string[]>([]);
   const [imageError, setImageError] = useState("");
+  const fieldRef = useRef<any>(null);
+  const isInitializedRef = useRef(false);
+
+  useEffect(() => {
+    // Initialize from field value if it exists and hasn't been initialized yet
+    if (
+      fieldRef.current?.value &&
+      Array.isArray(fieldRef.current.value) &&
+      !isInitializedRef.current
+    ) {
+      setImages(fieldRef.current.value);
+      isInitializedRef.current = true;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (fieldRef.current) {
+      fieldRef.current.onChange(images);
+    }
+  }, [images]);
+
+  const handleAddImage = async () => {
+    setImageError("");
+
+    if (!imageUrl.trim()) {
+      setImageError("Please enter an image URL");
+      return;
+    }
+
+    // Validate URL format
+    try {
+      new URL(imageUrl);
+    } catch {
+      setImageError("Please enter a valid URL");
+      return;
+    }
+
+    // Check if image already exists
+    if (images.includes(imageUrl)) {
+      setImageError("This image URL is already added");
+      return;
+    }
+
+    // Check max images limit
+    if (images.length >= 10) {
+      setImageError("Maximum 10 images allowed");
+      return;
+    }
+
+    // Verify image loads
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      const newImages = [...images, imageUrl];
+      setImages(newImages);
+      setImageUrl("");
+      setImageError("");
+      setIsOpen(false);
+    };
+    img.onerror = () => {
+      setImageError("Failed to load image. Please check the URL.");
+    };
+    img.src = imageUrl;
+  };
+
+  const handleRemoveImage = (index: number) => {
+    const newImages = images.filter((_, i) => i !== index);
+    setImages(newImages);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAddImage();
+    }
+  };
 
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => {
-        const images = field.value || [];
-
-        const handleAddImage = () => {
-          setImageError("");
-
-          if (!imageUrl.trim()) {
-            setImageError("Please enter an image URL");
-            return;
-          }
-
-          try {
-            new URL(imageUrl);
-          } catch {
-            setImageError("Please enter a valid URL");
-            return;
-          }
-
-          if ((images as string[]).includes(imageUrl)) {
-            setImageError("This image URL is already added");
-            return;
-          }
-
-          if (images.length >= 10) {
-            setImageError("Maximum 10 images allowed");
-            return;
-          }
-
-          const img = new Image();
-          img.crossOrigin = "anonymous";
-          img.onload = () => {
-            field.onChange([...images, imageUrl]);
-            setImageUrl("");
-            setImageError("");
-            setIsOpen(false);
-          };
-          img.onerror = () => {
-            setImageError("Failed to load image. Please check the URL.");
-          };
-          img.src = imageUrl;
-        };
-
-        const handleRemoveImage = (index: number) => {
-          field.onChange(images.filter((_, i) => i !== index));
-        };
-
-        const handleKeyPress = (e: React.KeyboardEvent) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            handleAddImage();
-          }
-        };
+        fieldRef.current = field;
 
         return (
           <FormItem>
@@ -105,6 +134,7 @@ export function ProductImagesField<T extends FieldValues>({
             </FormLabel>
             <FormControl>
               <div className="space-y-4">
+                {/* Images Grid */}
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
                   {images.map((image, index) => (
                     <div
@@ -126,6 +156,7 @@ export function ProductImagesField<T extends FieldValues>({
                     </div>
                   ))}
 
+                  {/* Add Image Button */}
                   {images.length < 10 && (
                     <Dialog open={isOpen} onOpenChange={setIsOpen}>
                       <DialogTrigger asChild>
@@ -142,6 +173,7 @@ export function ProductImagesField<T extends FieldValues>({
                         </button>
                       </DialogTrigger>
 
+                      {/* Modal Content */}
                       <DialogContent className="sm:max-w-md">
                         <DialogHeader>
                           <DialogTitle className="flex items-center gap-2">
@@ -155,6 +187,7 @@ export function ProductImagesField<T extends FieldValues>({
                         </DialogHeader>
 
                         <div className="space-y-4">
+                          {/* URL Input */}
                           <div className="space-y-2">
                             <label className="text-sm font-medium">
                               Image URL
@@ -176,6 +209,7 @@ export function ProductImagesField<T extends FieldValues>({
                             )}
                           </div>
 
+                          {/* Image Preview */}
                           {imageUrl && !imageError && (
                             <div className="space-y-2">
                               <label className="text-sm font-medium">
@@ -197,6 +231,7 @@ export function ProductImagesField<T extends FieldValues>({
                             </div>
                           )}
 
+                          {/* Info */}
                           <div className="rounded-lg bg-muted/50 p-3">
                             <p className="text-xs text-muted-foreground">
                               You can add up to 10 images. Supported formats:

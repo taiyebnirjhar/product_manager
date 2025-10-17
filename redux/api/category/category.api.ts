@@ -31,11 +31,11 @@ export const categoriesApi = baseApi.injectEndpoints({
       },
       transformResponse: (response: { data: any[]; meta: IMeta }) => ({
         categories: response?.data?.map((item) => ({
-          id: item.id,
-          name: item.name,
-          description: item.description,
-          image: item.image,
-          createdAt: item.createdAt,
+          id: item?.id,
+          name: item?.name,
+          description: item?.description,
+          image: item?.image,
+          createdAt: item?.createdAt,
         })),
         meta: response.meta,
       }),
