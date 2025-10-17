@@ -55,7 +55,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
             <div className="w-full bg-muted rounded-lg sm:rounded-xl overflow-hidden flex items-center justify-center aspect-square">
               <Image
                 src={
-                  product.images[selectedImage] ||
+                  product.images?.[selectedImage] ||
                   "/placeholder.svg?height=600&width=600&query=product"
                 }
                 alt={product.name}
