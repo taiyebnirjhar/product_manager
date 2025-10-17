@@ -30,7 +30,7 @@ export const categoriesApi = baseApi.injectEndpoints({
         };
       },
       transformResponse: (response: { data: any[]; meta: IMeta }) => ({
-        categories: response.data.map((item) => ({
+        categories: response?.data?.map((item) => ({
           id: item.id,
           name: item.name,
           description: item.description,
@@ -41,28 +41,6 @@ export const categoriesApi = baseApi.injectEndpoints({
       }),
       providesTags: [TAG_TYPES.CATEGORIES],
     }),
-
-    // Search categories
-    searchCategories: builder.query<
-      { categories: ICategory[] },
-      { searchedText: string }
-    >({
-      query: (arg) => ({
-        url: `${url}/search`,
-        method: "GET",
-        params: { searchedText: arg.searchedText },
-      }),
-      transformResponse: (response: any[]) => ({
-        categories: response.map((item) => ({
-          id: item.id,
-          name: item.name,
-          description: item.description,
-          image: item.image,
-          createdAt: item.createdAt,
-        })),
-      }),
-      providesTags: [TAG_TYPES.CATEGORIES],
-    }),
   }),
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -70,5 +48,4 @@ export const categoriesApi = baseApi.injectEndpoints({
   overrideExisting: module.hot?.status() === "apply",
 });
 
-export const { useGetCategoriesQuery, useSearchCategoriesQuery } =
-  categoriesApi;
+export const { useGetCategoriesQuery } = categoriesApi;

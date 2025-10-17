@@ -1,6 +1,7 @@
 import { Breadcrumb } from "@/components/shared/bread-crumb/Breadcrumb";
 import PageContainer from "@/components/shared/page-container/page-container";
 import { Metadata } from "next";
+import CreateProductsForm from "./_components/create-products-form";
 
 export const metadata: Metadata = {
   title: "Create Product",
@@ -16,6 +17,7 @@ export default function CreateProductPage() {
   return (
     <PageContainer>
       <Breadcrumb items={breadcrumbs} />
+      <CreateProductsForm />
     </PageContainer>
   );
 }

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createToastHandler } from "@/lib/onquery-toast";
 import { baseApi } from "@/redux/base-api";
 import { TAG_TYPES } from "@/redux/tag-types";
 import {
@@ -22,11 +21,6 @@ export const productsApi = baseApi.injectEndpoints({
         data: arg.data,
       }),
       invalidatesTags: [TAG_TYPES.PRODUCTS],
-      onQueryStarted: createToastHandler({
-        loading: "Creating product...",
-        success: "Product created successfully",
-        error: "Failed to create product",
-      }),
     }),
 
     // Get Products with pagination/filtering
@@ -53,7 +47,7 @@ export const productsApi = baseApi.injectEndpoints({
       },
 
       transformResponse: (response: { data: any[]; meta: IMeta }) => ({
-        products: response.data.map((item) => ({
+        products: response?.data?.map((item) => ({
           id: item.id,
           name: item.name,
           description: item.description,
@@ -108,11 +102,6 @@ export const productsApi = baseApi.injectEndpoints({
         { type: TAG_TYPES.PRODUCTS, id: arg.id },
         TAG_TYPES.PRODUCTS,
       ],
-      onQueryStarted: createToastHandler({
-        loading: "Updating product...",
-        success: "Product updated successfully",
-        error: "Failed to update product",
-      }),
     }),
 
     // Delete Product
@@ -122,11 +111,6 @@ export const productsApi = baseApi.injectEndpoints({
         method: "DELETE",
       }),
       invalidatesTags: [TAG_TYPES.PRODUCTS],
-      onQueryStarted: createToastHandler({
-        loading: "Deleting product...",
-        success: "Product deleted successfully",
-        error: "Failed to delete product",
-      }),
     }),
   }),
 

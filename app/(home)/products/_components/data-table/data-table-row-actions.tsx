@@ -9,8 +9,11 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  Separator,
 } from "@/components/ui";
-
+import { DeleteAlert } from "@/components/ui/alert-dialog/delete-alert";
+import { useDeleteProductMutation } from "@/redux/api/product/product.api";
+import Link from "next/link";
 import { toast } from "sonner";
 
 interface DataTableRowActionsProps {
@@ -18,6 +21,21 @@ interface DataTableRowActionsProps {
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
+  const [deleteProduct] = useDeleteProductMutation();
+
+  const handleDelete = async () => {
+    const id = row.original.id;
+    try {
+      const toastId = toast.loading("Deleting the product ...");
+      await deleteProduct({ id: id });
+      toast.dismiss(toastId);
+      toast.success("Product deleted successfully");
+    } catch (error) {
+      toast.error("Failed to product the article ");
+      console.error("Error product the product:", error);
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -27,16 +45,22 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem
-          onClick={async () => {
-            await navigator.clipboard.writeText(
-              row.original.email ?? "Email not found"
-            );
-            toast.success("Email copied to clipboard");
-          }}
-        >
-          Copy email
-        </DropdownMenuItem>
+        <Link href={"/products/details"}>
+          <DropdownMenuItem>Details</DropdownMenuItem>
+        </Link>
+
+        <Link href={"/products/edit"}>
+          <DropdownMenuItem>Edit</DropdownMenuItem>
+        </Link>
+        <Separator />
+        <DeleteAlert onConfirm={handleDelete}>
+          <DropdownMenuItem
+            onSelect={(e) => e.preventDefault()}
+            className="text-destructive"
+          >
+            Delete
+          </DropdownMenuItem>
+        </DeleteAlert>
       </DropdownMenuContent>
     </DropdownMenu>
   );

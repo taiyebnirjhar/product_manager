@@ -15,6 +15,7 @@ export * from "./dialog/dialog";
 export * from "./drop-down/dropdown-menu";
 export * from "./form/field-label";
 export * from "./form/form";
+export * from "./input-group/input-group";
 export * from "./input-otp/input-otp";
 export * from "./input/input";
 export * from "./label/label";
