@@ -7,6 +7,7 @@ import SidebarToggler from "@/components/shared/sidebar-toggler/sidebar-toggler"
 import useAuth from "@/hooks/use-auth";
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { signOut } from "next-auth/react";
 import { useState } from "react";
 import { UserMenu } from "../user-menu/user-menu";
 export default function Navbar() {
@@ -53,7 +54,7 @@ export default function Navbar() {
           onClick={toggleMenu}
           whileTap={{ scale: 0.9 }}
         >
-          <Menu className="h-6 w-6 text-gray-900" />
+          <Menu className="h-6 w-6 " />
         </motion.button>
       </div>
 
@@ -72,7 +73,7 @@ export default function Navbar() {
               onClick={toggleMenu}
               whileTap={{ scale: 0.9 }}
             >
-              <X className="h-6 w-6 text-gray-900" />
+              <X className="h-6 w-6 " />
             </motion.button>
 
             <nav className="flex flex-col space-y-6">
@@ -93,7 +94,7 @@ export default function Navbar() {
 
               <motion.a
                 className="inline-flex items-center justify-center w-full px-5 py-3 text-base text-white bg-destructive rounded-full  mt-6"
-                onClick={toggleMenu}
+                onClick={async () => await signOut()}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
