@@ -26,9 +26,11 @@ function AppLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen flex-col md:flex-row overflow-hidden">
       {/* <!-- ===== Sidebar ===== --> */}
-      <Sidebar />
+      <div className="hidden md:block">
+        <Sidebar />
+      </div>
       {/* <!-- ===== Content Area  ===== --> */}
       <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
         {/* <!-- ===== Navbar  ===== --> */}
