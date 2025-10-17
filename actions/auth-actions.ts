@@ -8,7 +8,5 @@ export const loginWithCredential = async (
 ): Promise<{ token: string }> => {
   const res = await axiosInstance.post("/auth", body);
 
-  // console.log(res);
-
   return res.data;
 };
