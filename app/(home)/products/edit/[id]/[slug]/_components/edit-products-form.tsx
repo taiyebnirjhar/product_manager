@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
+import { ProductFormSkeleton } from "@/app/(home)/products/_components/skeletons/product-form-skeleton";
 import {
   Button,
   Card,
@@ -115,6 +116,9 @@ export default function EditProductsForm({
     }
   }, [fetchError]);
 
+  if (fetchedDataLoading) {
+    return <ProductFormSkeleton />;
+  }
   return (
     <Card>
       <CardHeader className="flex flex-col md:flex-row justify-between md:items-center">
