@@ -99,7 +99,7 @@ function CategoryImageCell({ row }: { row: Row<ICategory> }) {
         <Image
           src={imageUrl}
           alt={row.original.name || "Category image"}
-          className="h-32 w-32 rounded-lg object-cover border border-border"
+          className="h-32 max-w-32 rounded-lg object-cover border border-border min-w-32"
           width={120}
           height={120}
           onError={() => setImageError(true)}

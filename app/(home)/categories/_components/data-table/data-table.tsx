@@ -105,7 +105,7 @@ export function DataTable<TData, TValue>({
         <DataTableSkeleton />
       ) : (
         <div className="space-y-4">
-          <div className="rounded-md border">
+          <div className="rounded-md border ">
             <Table>
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (

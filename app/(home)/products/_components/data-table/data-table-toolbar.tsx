@@ -58,7 +58,7 @@ export function DataTableToolbar<TData>({
   }, [debouncedTerm]);
 
   return (
-    <div className="flex items-center justify-between gap-x-3">
+    <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
       <div className="flex flex-1 items-center space-x-2">
         <div className="flex items-center space-x-2 ml-2">
           <Button variant="ghost" className="h-8 w-8 p-0" disabled>
