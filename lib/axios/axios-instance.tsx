@@ -36,12 +36,13 @@ axiosInstance.interceptors.response.use(
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-expect-error
   function (response) {
-    // console.log(response);
+    console.log(response);
+
     const responseObject: ResponseSuccessType = {
-      data: response?.data?.data ?? response.data,
-      meta: response?.data?.meta,
-      success: response?.data?.success,
-      message: response?.data?.message,
+      data: response?.data,
+      meta: response?.data?.meta || undefined,
+      success: response?.data?.success || undefined,
+      message: response?.data?.message || undefined,
     };
     return responseObject;
   },

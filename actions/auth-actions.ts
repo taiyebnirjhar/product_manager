@@ -8,7 +8,7 @@ export const loginWithCredential = async (
 ): Promise<{ token: string }> => {
   const res = await axiosInstance.post("/auth", body);
 
-  if (!res?.data?.token) throw new Error("Login failed");
+  // console.log(res);
 
-  return res.data; // { token: "..." }
+  return res.data;
 };
