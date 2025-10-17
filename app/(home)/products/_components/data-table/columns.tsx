@@ -134,7 +134,19 @@ export function SelectAllCheckbox({ table }: { table: Table<IProduct> }) {
 
 function ProductImageCell({ row }: { row: Row<IProduct> }) {
   const [imageError, setImageError] = useState(false);
-  const imageUrl = row.original.images?.[0];
+
+  // Ensure the URL is a valid absolute URL
+  let imageUrl: string | null = row.original.images?.[0] || null;
+  try {
+    if (imageUrl) {
+      // Will throw if invalid
+      new URL(imageUrl);
+    } else {
+      imageUrl = null;
+    }
+  } catch {
+    imageUrl = null;
+  }
 
   return (
     <div className="flex items-center justify-start">

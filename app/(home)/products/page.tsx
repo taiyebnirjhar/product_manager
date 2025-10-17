@@ -73,7 +73,12 @@ function ProductsPageContent() {
         data={products}
         pagination={pagination}
         setPagination={setPagination}
-        totalDocumentCount={data?.meta?.total || 0}
+        // totalDocumentCount={data?.meta?.total || 0}
+        totalDocumentCount={
+          products.length < pagination.pageSize
+            ? pagination.pageIndex * pagination.pageSize + products.length
+            : (pagination.pageIndex + 2) * pagination.pageSize
+        }
         sorting={sorting}
         setSorting={setSorting}
         columnFilters={columnFilters}

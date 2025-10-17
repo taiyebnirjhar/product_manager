@@ -71,7 +71,12 @@ function CateoriesPageContent() {
         data={categories}
         pagination={pagination}
         setPagination={setPagination}
-        totalDocumentCount={data?.meta?.total || 0}
+        // totalDocumentCount={data?.meta?.total || 0}
+        totalDocumentCount={
+          categories.length < pagination.pageSize
+            ? pagination.pageIndex * pagination.pageSize + categories.length
+            : (pagination.pageIndex + 2) * pagination.pageSize
+        }
         sorting={sorting}
         setSorting={setSorting}
         columnFilters={columnFilters}
