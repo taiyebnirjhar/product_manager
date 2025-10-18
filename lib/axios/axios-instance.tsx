@@ -47,17 +47,18 @@ axiosInstance.interceptors.response.use(
     return responseObject;
   },
   async function (error) {
-    //  console.log(error);
+    // console.log(error);
     const responseObject: IGenericErrorResponse = {
       error: {
         message:
           error?.response?.data?.message ||
           error?.response?.data?.error?.message ||
+          error?.response?.data ||
           "Something went wrong",
       },
       success: error.response?.data?.success || false,
     };
-    return responseObject;
+    return Promise.reject(responseObject);
   }
 );
 

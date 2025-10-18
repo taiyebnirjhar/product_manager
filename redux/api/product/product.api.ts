@@ -8,6 +8,7 @@ import {
   IQuery,
   IUpdateProductPayload,
 } from "@/types";
+import { toast } from "sonner";
 
 const url = "/products";
 
@@ -45,7 +46,15 @@ export const productsApi = baseApi.injectEndpoints({
           params: restParams,
         };
       },
-
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+        } catch (error: any) {
+          toast.error(
+            error?.message ?? "Something went wrong. Please try again."
+          );
+        }
+      },
       transformResponse: (response: { data: any[]; meta: IMeta }) => ({
         products: response?.data?.map((item) => ({
           id: item?.id,

@@ -2,6 +2,7 @@
 import { baseApi } from "@/redux/base-api";
 import { TAG_TYPES } from "@/redux/tag-types";
 import { ICategory, IMeta, IQuery } from "@/types";
+import { toast } from "sonner";
 
 const url = "/categories";
 
@@ -28,6 +29,15 @@ export const categoriesApi = baseApi.injectEndpoints({
           method: "GET",
           params: restParams,
         };
+      },
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+        } catch (error: any) {
+          toast.error(
+            error?.message ?? "Something went wrong. Please try again."
+          );
+        }
       },
       transformResponse: (response: { data: any[]; meta: IMeta }) => ({
         categories: response?.data?.map((item) => ({
